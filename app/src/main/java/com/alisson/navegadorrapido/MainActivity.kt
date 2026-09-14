@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -14,61 +15,77 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        webView = WebView(this)
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.settings.databaseEnabled = true
-        webView.settings.loadsImagesAutomatically = true
-        webView.settings.javaScriptCanOpenWindowsAutomatically = true
-        webView.settings.setSupportMultipleWindows(false)
-        webView.settings.allowFileAccess = true
-        webView.settings.allowContentAccess = true
+        setContentView(R.layout.activity_main)
+        webView = findViewById(R.id.browser_webview)
+        configureWebView()
+
+        if (savedInstanceState == null) webView.loadUrl(HOME_URL)
+        else webView.restoreState(savedInstanceState)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (webView.canGoBack()) webView.goBack() else finish()
+            }
+        })
+    }
+
+    private fun configureWebView() {
+        webView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            loadsImagesAutomatically = true
+            javaScriptCanOpenWindowsAutomatically = true
+            setSupportMultipleWindows(false)
+            allowFileAccess = false
+            allowContentAccess = false
+            builtInZoomControls = false
+            displayZoomControls = false
+        }
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                return handleUrl(request.url.toString())
+                return handleUrl(request.url)
             }
 
             @Suppress("DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                return handleUrl(url)
+                return handleUrl(Uri.parse(url))
             }
         }
 
-        webView.loadUrl("file:///android_asset/index.html")
-        setContentView(webView)
     }
 
-    private fun handleUrl(url: String): Boolean {
-        val uri = Uri.parse(url)
-        val scheme = uri.scheme?.lowercase()
-
-        return when (scheme) {
+    private fun handleUrl(uri: Uri): Boolean {
+        return when (uri.scheme?.lowercase()) {
             "http", "https" -> {
-                webView.loadUrl(url)
+                webView.loadUrl(uri.toString())
                 true
             }
             "mailto", "tel", "sms", "geo" -> {
-                startActivity(Intent(Intent.ACTION_VIEW, uri))
+                runCatching { startActivity(Intent(Intent.ACTION_VIEW, uri)) }
                 true
             }
             "intent" -> {
-                try {
-                    startActivity(Intent.parseUri(url, Intent.URI_INTENT_SCHEME))
-                } catch (_: Exception) {
-                }
+                runCatching { startActivity(Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME)) }
                 true
             }
             else -> false
         }
     }
 
-    override fun onBackPressed() {
-        if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
+    override fun onSaveInstanceState(outState: Bundle) {
+        webView.saveState(outState)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
+        webView.stopLoading()
         webView.destroy()
         super.onDestroy()
+    }
+
+    companion object {
+        private const val HOME_URL = "file:///android_asset/index.html"
     }
 }
