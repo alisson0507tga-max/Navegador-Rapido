@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.browser_webview)
         configureWebView()
 
-        if (savedInstanceState == null) webView.loadUrl(HOME_URL)
+        if (savedInstanceState == null) loadHomePage()
         else webView.restoreState(savedInstanceState)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -74,6 +74,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadHomePage() {
+        val html = assets.open("index.html").bufferedReader(Charsets.UTF_8).use { it.readText() }
+        webView.loadDataWithBaseURL(
+            HOME_BASE_URL,
+            html,
+            "text/html",
+            "UTF-8",
+            null
+        )
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         webView.saveState(outState)
         super.onSaveInstanceState(outState)
@@ -86,6 +97,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val HOME_URL = "file:///android_asset/index.html"
+        private const val HOME_BASE_URL = "https://navegador-rapido.local/"
     }
 }
