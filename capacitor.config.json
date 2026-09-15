@@ -1,0 +1,8 @@
+{
+  "appId": "com.navegador.rapido",
+  "appName": "Navegador Rápido",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

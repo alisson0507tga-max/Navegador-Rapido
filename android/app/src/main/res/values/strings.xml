@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Navegador Rápido</string>
+    <string name="title_activity_main">Navegador Rápido</string>
+    <string name="package_name">com.navegador.rapido</string>
+    <string name="custom_url_scheme">com.navegador.rapido</string>
+</resources>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>  <html lang="pt-BR" data-theme="dark">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">  
+<meta name="theme-color" content="#0f172a">  
+<meta name="color-scheme" content="dark">  <!-- SOMENTE conexões críticas -->  <link rel="preconnect" href="https://www.betfair.com">  
+<link rel="preconnect" href="https://www.google.com">  <link rel="dns-prefetch" href="https://www.betfair.com">  
+<link rel="dns-prefetch" href="https://www.google.com">  <!--  
+  Chrome/Edge:  
+  pré-renderiza SOMENTE a Betfair.  
+  Não desperdiça conexão com os outros atalhos.  
+-->  <script type="speculationrules">  
+{  
+  "prerender": [  
+    {  
+      "source": "list",  
+      "urls": ["https://www.betfair.com/"],  
+      "eagerness": "moderate"  
+    }  
+  ]  
+}  
+</script>  <script>  
+try {  
+  const t = localStorage.getItem("theme");  
+  document.documentElement.dataset.theme =  
+    t === "light" ? "light" : "dark";  
+} catch {}  
+</script>  <style>  
+:root{  
+  --bg:#0f172a;  
+  --card:#1e293b;  
+  --text:#f8fafc;  
+  --muted:#94a3b8;  
+  --accent:#38bdf8;  
+  --border:rgba(255,255,255,.08);  
+}  
+  
+[data-theme="light"]{  
+  --bg:#f1f5f9;  
+  --card:#fff;  
+  --text:#0f172a;  
+  --muted:#64748b;  
+  --accent:#0284c7;  
+  --border:rgba(15,23,42,.09);  
+}  
+  
+*{  
+  box-sizing:border-box;  
+  -webkit-tap-highlight-color:transparent;  
+}  
+  
+html{  
+  background:var(--bg);  
+  color-scheme:dark;  
+}  
+  
+html[data-theme="light"]{  
+  color-scheme:light;  
+}  
+  
+body{  
+  margin:0;  
+  width:100%;  
+  min-height:100svh;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  padding:14px;  
+  background:var(--bg);  
+  color:var(--text);  
+  font-family:  
+    system-ui,  
+    -apple-system,  
+    BlinkMacSystemFont,  
+    "Segoe UI",  
+    Roboto,  
+    sans-serif;  
+}  
+  
+main{  
+  width:100%;  
+  max-width:620px;  
+}  
+  
+header{  
+  text-align:center;  
+  margin-bottom:18px;  
+}  
+  
+#clock{  
+  font-size:clamp(42px,13vw,64px);  
+  font-weight:700;  
+  line-height:1;  
+  letter-spacing:-2px;  
+  font-variant-numeric:tabular-nums;  
+}  
+  
+#date{  
+  margin-top:6px;  
+  color:var(--muted);  
+  font-size:14px;  
+}  
+  
+/* Busca */  
+  
+.search{  
+  display:flex;  
+  width:100%;  
+  height:50px;  
+  overflow:hidden;  
+  background:var(--card);  
+  border:1px solid var(--border);  
+  border-radius:10px;  
+}  
+  
+.search input{  
+  flex:1;  
+  min-width:0;  
+  border:0;  
+  outline:0;  
+  padding:0 13px;  
+  background:transparent;  
+  color:var(--text);  
+  font-size:16px;  
+}  
+  
+.search input::placeholder{  
+  color:var(--muted);  
+}  
+  
+.search button{  
+  width:82px;  
+  border:0;  
+  background:var(--accent);  
+  color:#06202b;  
+  font-weight:700;  
+  font-size:14px;  
+}  
+  
+/* Atalhos */  
+  
+.grid{  
+  display:grid;  
+  grid-template-columns:repeat(3,1fr);  
+  gap:8px;  
+  margin-top:10px;  
+}  
+  
+.card{  
+  min-height:68px;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  flex-direction:column;  
+  gap:4px;  
+  
+  background:var(--card);  
+  border:1px solid var(--border);  
+  border-radius:10px;  
+  
+  color:var(--text);  
+  text-decoration:none;  
+  font-size:12px;  
+  
+  touch-action:manipulation;  
+}  
+  
+.card:active{  
+  opacity:.75;  
+}  
+  
+.icon{  
+  font-size:19px;  
+  line-height:1;  
+}  
+  
+.theme{  
+  position:fixed;  
+  top:9px;  
+  right:9px;  
+  
+  width:36px;  
+  height:36px;  
+  
+  display:grid;  
+  place-items:center;  
+  
+  border:1px solid var(--border);  
+  border-radius:9px;  
+  
+  background:var(--card);  
+  color:var(--text);  
+  
+  font-size:16px;  
+}  
+  
+@media(max-width:420px){  
+  .grid{  
+    grid-template-columns:repeat(2,1fr);  
+  }  
+}  
+</style>  </head>  <body>  <button  
+class="theme"  
+id="theme"  
+type="button"  
+aria-label="Alternar tema">☾</button>
+
+<main>  <header>  
+  <div id="clock">--:--</div>  
+  <div id="date">...</div>  
+</header>  <form  
+  class="search"  
+  action="https://www.google.com/search"  
+  method="get">  <input  
+id="search"  
+name="q"  
+type="search"  
+placeholder="Pesquisar no Google..."  
+autocomplete="off"  
+autocorrect="off"  
+autocapitalize="off"  
+spellcheck="false"  
+enterkeyhint="search">
+
+<button type="submit">Buscar</button>
+
+</form>  <nav class="grid">    <!-- 1 — PRIORIDADE MÁXIMA -->  <a class="card"  
+href="https://www.betfair.com/">
+<span class="icon">B</span>
+<span>Betfair</span>
+</a>
+
+<a class="card"  
+href="https://www.youtube.com/">
+<span class="icon">▶</span>
+<span>YouTube</span>
+</a>
+
+<a class="card"  
+href="https://mail.google.com/">
+<span class="icon">✉</span>
+<span>Gmail</span>
+</a>
+
+<a class="card"  
+href="https://web.whatsapp.com/">
+<span class="icon">◉</span>
+<span>WhatsApp</span>
+</a>
+
+<a class="card"  
+href="https://github.com/">
+<span class="icon">⌘</span>
+<span>GitHub</span>
+</a>
+
+<a class="card"  
+href="https://chatgpt.com/">
+<span class="icon">AI</span>
+<span>ChatGPT</span>
+</a>
+
+<a class="card"  
+href="https://www.google.com/maps/">
+<span class="icon">⌖</span>
+<span>Maps</span>
+</a>
+
+</nav>  </main>  <script>  
+(function(){  
+  
+"use strict";  
+  
+const root = document.documentElement;  
+const clock = document.getElementById("clock");  
+const date = document.getElementById("date");  
+const input = document.getElementById("search");  
+const theme = document.getElementById("theme");  
+  
+const days = [  
+  "domingo",  
+  "segunda-feira",  
+  "terça-feira",  
+  "quarta-feira",  
+  "quinta-feira",  
+  "sexta-feira",  
+  "sábado"  
+];  
+  
+const months = [  
+  "janeiro",  
+  "fevereiro",  
+  "março",  
+  "abril",  
+  "maio",  
+  "junho",  
+  "julho",  
+  "agosto",  
+  "setembro",  
+  "outubro",  
+  "novembro",  
+  "dezembro"  
+];  
+  
+let timer;  
+  
+function updateClock(){  
+  
+  const now = new Date();  
+  
+  const h = String(now.getHours()).padStart(2,"0");  
+  const m = String(now.getMinutes()).padStart(2,"0");  
+  
+  clock.textContent = h + ":" + m;  
+  
+  date.textContent =  
+    days[now.getDay()].charAt(0).toUpperCase() +  
+    days[now.getDay()].slice(1) +  
+    ", " +  
+    now.getDate() +  
+    " de " +  
+    months[now.getMonth()];  
+  
+  clearTimeout(timer);  
+  
+  timer = setTimeout(  
+    updateClock,  
+    60000 - now.getSeconds()*1000 - now.getMilliseconds() + 30  
+  );  
+}  
+  
+updateClock();  
+  
+/* Tema */  
+  
+function updateThemeIcon(){  
+  theme.textContent =  
+    root.dataset.theme === "dark" ? "☾" : "☀";  
+}  
+  
+updateThemeIcon();  
+  
+theme.onclick = function(){  
+  
+  const next =  
+    root.dataset.theme === "dark"  
+      ? "light"  
+      : "dark";  
+  
+  root.dataset.theme = next;  
+  
+  updateThemeIcon();  
+  
+  try{  
+    localStorage.setItem("theme",next);  
+  }catch{}  
+  
+};  
+  
+/* Teclado */  
+  
+document.addEventListener("keydown",function(e){  
+  
+  if(  
+    e.key === "/" &&  
+    !e.ctrlKey &&  
+    !e.metaKey &&  
+    !e.altKey &&  
+    document.activeElement !== input  
+  ){  
+    e.preventDefault();  
+    input.focus();  
+    return;  
+  }  
+  
+  if(  
+    (e.ctrlKey || e.metaKey) &&  
+    e.key.toLowerCase() === "k"  
+  ){  
+    e.preventDefault();  
+    input.focus();  
+    return;  
+  }  
+  
+  if(  
+    !e.ctrlKey &&  
+    !e.metaKey &&  
+    !e.altKey &&  
+    document.activeElement !== input &&  
+    e.key.toLowerCase() === "t"  
+  ){  
+    theme.click();  
+  }  
+  
+});  
+  
+})();  
+</script>  </body>  
+</html>  
